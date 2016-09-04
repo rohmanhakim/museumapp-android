@@ -1,14 +1,10 @@
 package io.github.rohmanhakim.museumapp.deps;
 
 import android.content.Context;
-//import com.google.gson.Gson;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.internal.bind.DateTypeAdapter;
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
@@ -17,6 +13,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.github.rohmanhakim.museumapp.R;
+import io.github.rohmanhakim.museumapp.api.service.MuseumApiService;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -36,26 +35,39 @@ public class MuseumApiModule {
 
     @Provides
     @Singleton
+    public HttpLoggingInterceptor providesHttpLoggingInterceptor(){
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        return interceptor;
+    }
+
+    @Provides
+    @Singleton
     @SuppressWarnings("unused")
     @Named("baseOkhtpp")
-    public okhttp3.OkHttpClient providesOkHttpClient3() {
-        int timeout = 2;
-        return new okhttp3.OkHttpClient.Builder()
-                .readTimeout(timeout, TimeUnit.SECONDS)
-                .writeTimeout(timeout, TimeUnit.SECONDS)
-                .connectTimeout(timeout, TimeUnit.SECONDS)
-                .build();
+    public OkHttpClient providesOkHttpClient3(HttpLoggingInterceptor interceptor) {
+            return new OkHttpClient.Builder()
+                    .addInterceptor(interceptor)
+                    .build();
     }
 
     @Provides
     @Singleton
     @SuppressWarnings("unused")
     @Named("baseRetrofit")
-    public Retrofit providesBaseRetrofit(Context context, okhttp3.OkHttpClient okHttpClient, Gson gson) {
+    public Retrofit providesBaseRetrofit(Context context, @Named("baseOkhtpp") OkHttpClient okHttpClient, Gson gson) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(context.getString(R.string.app_base_url))
                 .client(okHttpClient)
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    @SuppressWarnings("unused")
+    public MuseumApiService providesMuseumApiService(@Named("baseRetrofit") Retrofit retrofit){
+        MuseumApiService museumApiService = retrofit.create(MuseumApiService.class);
+        return  museumApiService;
     }
 }
