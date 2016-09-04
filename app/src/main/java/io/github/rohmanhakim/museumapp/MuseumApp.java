@@ -2,6 +2,7 @@ package io.github.rohmanhakim.museumapp;
 
 import android.app.Application;
 
+//import io.github.rohmanhakim.museumapp.deps.DaggerMuseumComponent;
 import io.github.rohmanhakim.museumapp.deps.DaggerMuseumComponent;
 import io.github.rohmanhakim.museumapp.deps.MuseumApiModule;
 import io.github.rohmanhakim.museumapp.deps.MuseumAppModule;
@@ -17,9 +18,17 @@ public class MuseumApp extends Application{
     public void onCreate() {
         super.onCreate();
 
-        museumComponent = DaggerMuseumComponent.builder()
+        setMuseumComponent(DaggerMuseumComponent.builder()
                 .museumAppModule(new MuseumAppModule(this))
                 .museumApiModule(new MuseumApiModule())
-                .build();
+                .build());
+    }
+
+    public MuseumComponent getMuseumComponent() {
+        return museumComponent;
+    }
+
+    public void setMuseumComponent(MuseumComponent museumComponent) {
+        this.museumComponent = museumComponent;
     }
 }
