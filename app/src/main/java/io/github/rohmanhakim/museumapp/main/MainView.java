@@ -6,4 +6,5 @@ package io.github.rohmanhakim.museumapp.main;
 public interface MainView {
     void showError(String message);
     void setMuseumName(String name);
+    void initMap();
 }
