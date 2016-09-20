@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
 
     @Override
     public void onLocationChanged(Location location) {
-
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 12));
     }
 
     @Override
