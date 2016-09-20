@@ -3,6 +3,7 @@ package io.github.rohmanhakim.museumapp.deps;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.github.rohmanhakim.museumapp.api.RequestManager;
 import io.github.rohmanhakim.museumapp.main.MainActivity;
 
 /**

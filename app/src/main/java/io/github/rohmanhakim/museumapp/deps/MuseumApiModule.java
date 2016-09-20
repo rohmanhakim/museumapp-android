@@ -5,18 +5,18 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import io.github.rohmanhakim.museumapp.R;
-import io.github.rohmanhakim.museumapp.api.service.MuseumApiService;
+import io.github.rohmanhakim.museumapp.api.service.museum.IMuseumAPI;
+import io.github.rohmanhakim.museumapp.api.service.museum.MuseumAPIService;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -58,6 +58,7 @@ public class MuseumApiModule {
     public Retrofit providesBaseRetrofit(Context context, @Named("baseOkhtpp") OkHttpClient okHttpClient, Gson gson) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(context.getString(R.string.app_base_url))
                 .client(okHttpClient)
                 .build();
@@ -66,8 +67,15 @@ public class MuseumApiModule {
     @Provides
     @Singleton
     @SuppressWarnings("unused")
-    public MuseumApiService providesMuseumApiService(@Named("baseRetrofit") Retrofit retrofit){
-        MuseumApiService museumApiService = retrofit.create(MuseumApiService.class);
-        return  museumApiService;
+    public IMuseumAPI providesMuseumApi(@Named("baseRetrofit") Retrofit retrofit){
+        IMuseumAPI museumAPI = retrofit.create(IMuseumAPI.class);
+        return museumAPI;
+    }
+
+    @Provides
+    @Singleton
+    public MuseumAPIService providesMuseumAPIService(IMuseumAPI museumAPI){
+        MuseumAPIService museumAPIService = new MuseumAPIService(museumAPI);
+        return museumAPIService;
     }
 }

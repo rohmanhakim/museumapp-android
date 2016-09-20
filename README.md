@@ -1,4 +1,7 @@
 # Android Museum App
+
+[![Build Status](https://travis-ci.org/rohmanhakim/museumapp-android.svg?branch=master)](https://travis-ci.org/rohmanhakim/museumapp-android)
+
 App android untuk mencari museum di indonesia.
 
 Dokumentasi API : http://data.go.id/dataset/museum-indonesia
