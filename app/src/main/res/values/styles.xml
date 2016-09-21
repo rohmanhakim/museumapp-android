@@ -7,5 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="detailTextLayout">
+        <item name="android:layout_marginTop">@dimen/museum_detail_text_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/museum_detail_text_spacing</item>
+    </style>
 </resources>

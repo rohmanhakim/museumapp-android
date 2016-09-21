@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Museum App</string>
+    <string name="tahun_berdiri">Tahun berdiri</string>
+    <string name="bangunan">Bangunan</string>
+    <string name="status_kepemilikan">Status kepemilikan</string>
+    <string name="luas_tanah">Luas tanah</string>
 </resources>
