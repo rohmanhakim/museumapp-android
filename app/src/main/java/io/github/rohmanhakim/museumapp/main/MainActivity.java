@@ -23,6 +23,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -61,8 +64,11 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
     }
 
     @Override
-    public void setMuseumName(String name) {
-
+    public void populateMuseumCoordinate(List<LatLng> museumCoordinates) {
+        for (LatLng latLng : museumCoordinates){
+            map.addMarker(new MarkerOptions()
+                    .position(latLng));
+        }
     }
 
     @Override
@@ -96,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Connect
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 12));
+            viewModel.getMuseumCoordinatesByLatLong(mLastLocation.getLatitude(),mLastLocation.getLongitude());
         }
 
     }
